@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Environmental Monitoring Dashboard - Frontend
 
-## Getting Started
+This is the frontend application for the Environmental Monitoring Dashboard, providing real-time visualization of environmental data for port authorities.
 
-First, run the development server:
+## Features
+
+- Real-time environmental data visualization
+- Interactive dashboard with multiple metrics
+- Time series charts for historical data
+- Interactive map for sensor locations
+- Dark mode support
+- Responsive design
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Recharts
+- Leaflet
+- NextAuth.js
+
+## Setup
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Create a `.env.local` file with the following variables:
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+## Components
+
+### Dashboard Layout
+- Responsive layout with dark mode support
+- Navigation bar with theme toggle
+
+### Environmental Cards
+- Air Quality Card (CO2, NO2, SO2, PM2.5)
+- Water Quality Card (pH, dissolved oxygen, oil spills)
+- Noise Level Card
+- Temperature & Humidity Card
+
+### Data Visualization
+- Time Series Chart for historical data
+- Interactive Map for sensor locations
+
+## Development
+
+To start the development server with hot-reloading:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Building for Production
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To build the application for production:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+## Testing
 
-To learn more about Next.js, take a look at the following resources:
+To run tests:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm test
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+The application can be deployed to Vercel:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+vercel
+```
