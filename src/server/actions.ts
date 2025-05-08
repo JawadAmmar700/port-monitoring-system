@@ -4,7 +4,7 @@ import { Sensor } from "../types/environmental";
 
 export async function getSensors(): Promise<Sensor[]> {
   try {
-    const response = await fetch("http://localhost:3001/api/sensors", {
+    const response = await fetch(process.env.BACKEND_URL + "/api/sensors", {
       next: { revalidate: 60 }, // Revalidate every 60 seconds
     });
 
@@ -21,7 +21,7 @@ export async function getSensors(): Promise<Sensor[]> {
 
 export async function fetchAllVessels() {
   try {
-    const response = await fetch("http://localhost:3001/api/vessels", {
+    const response = await fetch(process.env.BACKEND_URL + "/api/vessels", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
