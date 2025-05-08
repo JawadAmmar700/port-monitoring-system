@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
-import { AlertTriangle } from "lucide-react"
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { AlertTriangle } from "lucide-react";
 
 enum Error {
   Configuration = "Configuration",
@@ -12,8 +12,8 @@ enum Error {
 const errorMap = {
   [Error.Configuration]: (
     <p>
-      There was a problem while trying to authenticate. Please contact us if this
-      issue persists. Unique error code:{" "}
+      There was a problem while trying to authenticate. Please contact us if
+      this issue persists. Unique error code:{" "}
       <code className="rounded bg-gray-200 px-1 py-0.5 text-xs font-mono text-gray-800">
         Configuration
       </code>
@@ -21,23 +21,15 @@ const errorMap = {
   ),
   [Error.Unauthorized]: (
     <p>
-      User not authorized. Please contact the administrator to get access to the system.
+      User not authorized. Please contact the administrator to get access to the
+      system.
     </p>
   ),
-}
+};
 
-export default function AuthErrorPage() {
-  const [mounted, setMounted] = useState(false)
-  const search = useSearchParams()
-  const error = search.get("error") as Error
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
+function ErrorContent() {
+  const search = useSearchParams();
+  const error = search.get("error") as Error;
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gradient-to-tr from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 px-4">
@@ -46,7 +38,9 @@ export default function AuthErrorPage() {
           <div className="flex items-center justify-center h-16 w-16 rounded-full bg-red-100 dark:bg-red-900">
             <AlertTriangle className="h-8 w-8 text-red-500 dark:text-red-400" />
           </div>
-          <h1 className="text-2xl font-bold text-center">Authentication Error</h1>
+          <h1 className="text-2xl font-bold text-center">
+            Authentication Error
+          </h1>
           <p className="text-red-500 text-center">{error}</p>
           <div className="text-sm text-center text-gray-600 dark:text-gray-300">
             {errorMap[error] || "Please contact us if this error persists."}
@@ -60,5 +54,19 @@ export default function AuthErrorPage() {
         </div>
       </div>
     </div>
-  )
+  );
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen w-full items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+        </div>
+      }
+    >
+      <ErrorContent />
+    </Suspense>
+  );
 }
