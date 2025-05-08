@@ -7,6 +7,7 @@ import { sendVerificationRequest } from "@/lib/verification-request";
 
 export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
+  trustHost: true,
   providers: [
     Nodemailer({
       server: {

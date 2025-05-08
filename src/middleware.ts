@@ -36,6 +36,8 @@ export async function middleware(request: NextRequest) {
     secret: process.env.AUTH_SECRET,
   });
 
+  console.log("token", token);
+
   // If not authenticated and not on a public route, redirect to sign-in
   if (!token && !isPublicRoute) {
     const signInUrl = new URL("/auth/signin", request.url);
