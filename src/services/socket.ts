@@ -18,7 +18,9 @@ class SocketService {
   public connect(): void {
     if (this.socket) return;
 
-    this.socket = io(process.env.BACKEND_URL || "http://localhost:3001");
+    this.socket = io(
+      process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
+    );
 
     this.socket.on("connect", () => {
       this.isConnected = true;
