@@ -33,7 +33,8 @@ export async function middleware(request: NextRequest) {
   // Get the session token
   const token = await getToken({
     req: request,
-    secret: process.env.AUTH_SECRET,
+    secret: process.env.AUTH_SECRET || "",
+    secureCookie: process.env.NODE_ENV === "production" ? true : false,
   });
 
   console.log("token", token);
