@@ -1,57 +1,131 @@
-# Environmental Monitoring Dashboard - Frontend
+# Port Monitoring System - Frontend
 
-This is the frontend application for the Environmental Monitoring Dashboard, providing real-time visualization of environmental data for port authorities.
+This is the frontend application for the Port Monitoring System, providing a modern and interactive interface for monitoring port operations, environmental conditions, and vessel movements.
 
 ## Features
 
 - Real-time environmental data visualization
+- Vessel tracking and management
 - Interactive dashboard with multiple metrics
 - Time series charts for historical data
 - Interactive map for sensor locations
 - Dark mode support
 - Responsive design
+- Email-based authentication
+- Role-based access control (Manager/Employee)
 
 ## Tech Stack
 
-- Next.js
+- Next.js 15.3.1
 - TypeScript
 - Tailwind CSS
-- Recharts
-- Leaflet
+- Prisma (MongoDB)
 - NextAuth.js
+- Socket.IO Client
+- Recharts
+- Framer Motion
+- Lucide React Icons
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn package manager
+- MongoDB database
+- Mailtrap account for email authentication
 
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Create a `.env.local` file with the following variables:
-```
-NEXT_PUBLIC_API_URL=http://localhost:3001
+
+```env
+# Database
+DATABASE_URL="mongodb://localhost:27017/port-monitoring" # Add your own MongoDB connection string
+
+# Auth.js Authentication
+AUTH_SECRET="your-auth-secret"  # Generate using: openssl rand -base64 32
+BACKEND_URL=http://localhost:3001
+AUTH_TRUST_HOST=http://localhost:3000
+NEXTAUTH_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL="http://localhost:3001"
+
+# Email Configuration (Choose either Mailtrap or Brevo)
+# Option 1: Mailtrap (for development)
+MAILTRAP_HOST="smtp.mailtrap.io"
+MAILTRAP_USERNAME="your-mailtrap-username"
+MAILTRAP_PASSWORD="your-mailtrap-password"
+MAILTRAP_PORT=587
+EMAIL_FROM="noreply@yourdomain.com"
+
+# Option 2: Brevo (for production)
+# BREVO_HOST="smtp-relay.brevo.com"
+# BREVO_USERNAME="your-brevo-username"
+# BREVO_PASSWORD="your-brevo-api-key"
+# BREVO_PORT=587
+# EMAIL_FROM="your-verified-sender@yourdomain.com"
 ```
 
-3. Start the development server:
+3. Initialize the database:
+
 ```bash
-npm run dev
+npm run prisma:generate
 ```
 
-## Components
+4. Seed the database with initial data:
 
-### Dashboard Layout
-- Responsive layout with dark mode support
-- Navigation bar with theme toggle
+```bash
+npm run prisma:seed
+```
 
-### Environmental Cards
-- Air Quality Card (CO2, NO2, SO2, PM2.5)
-- Water Quality Card (pH, dissolved oxygen, oil spills)
-- Noise Level Card
-- Temperature & Humidity Card
+## Email Service Setup
 
-### Data Visualization
-- Time Series Chart for historical data
-- Interactive Map for sensor locations
+### Option 1: Mailtrap (Recommended for Development)
+
+1. Sign up for a Mailtrap account at https://mailtrap.io
+2. Go to your Mailtrap inbox
+3. Click on "Show Credentials"
+4. Copy the SMTP credentials and update your `.env.local` file:
+   - MAILTRAP_HOST
+   - MAILTRAP_USERNAME
+   - MAILTRAP_PASSWORD
+   - MAILTRAP_PORT
+
+### Option 2: Brevo (Recommended for Production)
+
+1. Sign up for a Brevo account at https://www.brevo.com
+2. Go to SMTP & API settings
+3. Create an SMTP API key
+4. Update your `.env.local` file with Brevo credentials:
+   - BREVO_HOST
+   - BREVO_USERNAME
+   - BREVO_PASSWORD (API key)
+   - BREVO_PORT
+   - EMAIL_FROM (must be a verified sender)
+
+⚠️ **Important Note for Brevo Users:**
+
+- Brevo does not allow sending emails to temporary or fake email addresses
+- Using temporary email addresses will result in account blocking
+- When using Brevo, update the `prisma/seed.ts` file with real email addresses
+- Use real Gmail or other valid email addresses for testing
+- Make sure to verify your sender email address in Brevo before sending emails
+
+## Authentication
+
+The application uses email-based authentication with magic links. Users are divided into two roles:
+
+- Manager: Full access to all features
+- Employee: Limited access to monitoring features
+
+Default test accounts (created by seed script):
+
+- Manager: micey97158@harinv.com
+- Employee: ruzysy892@chapsmail.com
 
 ## Development
 
@@ -69,18 +143,61 @@ To build the application for production:
 npm run build
 ```
 
-## Testing
-
-To run tests:
+To start the production server:
 
 ```bash
-npm test
+npm start
 ```
 
-## Deployment
+## Database Management
 
-The application can be deployed to Vercel:
+Generate Prisma client:
 
 ```bash
-vercel
+npm run prisma:generate
 ```
+
+Run Prisma studio:
+
+```bash
+npx prisma studio
+```
+
+Seed the database:
+
+```bash
+npm run prisma:seed
+```
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── app/            # Next.js app directory
+│   ├── components/     # React components
+│   ├── lib/           # Utility functions
+│   ├── server/        # Server-side code
+│   └── styles/        # Global styles
+├── prisma/            # Database schema and migrations
+├── public/            # Static assets
+└── package.json
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run prisma:generate` - Generate Prisma client
+- `npm run prisma:migrate` - Run database migrations
+- `npm run prisma:seed` - Seed the database
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request

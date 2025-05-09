@@ -26,76 +26,6 @@ async function main() {
       emailVerified: new Date(),
     },
   });
-
-  // Create additional managers
-  const managers = await Promise.all([
-    prisma.user.upsert({
-      where: { email: "portadmin@example.com" },
-      update: {},
-      create: {
-        email: "portadmin@example.com",
-        name: "Sarah Port Admin",
-        type: UserType.MANAGER,
-        emailVerified: new Date(),
-      },
-    }),
-    prisma.user.upsert({
-      where: { email: "operations@example.com" },
-      update: {},
-      create: {
-        email: "operations@example.com",
-        name: "Michael Operations",
-        type: UserType.MANAGER,
-        emailVerified: new Date(),
-      },
-    }),
-  ]);
-
-  // Create additional employees
-  const employees = await Promise.all([
-    prisma.user.upsert({
-      where: { email: "monitoring@example.com" },
-      update: {},
-      create: {
-        email: "monitoring@example.com",
-        name: "David Monitoring",
-        type: UserType.EMPLOYEE,
-        emailVerified: new Date(),
-      },
-    }),
-    prisma.user.upsert({
-      where: { email: "environment@example.com" },
-      update: {},
-      create: {
-        email: "environment@example.com",
-        name: "Lisa Environment",
-        type: UserType.EMPLOYEE,
-        emailVerified: new Date(),
-      },
-    }),
-    prisma.user.upsert({
-      where: { email: "security@example.com" },
-      update: {},
-      create: {
-        email: "security@example.com",
-        name: "Robert Security",
-        type: UserType.EMPLOYEE,
-        emailVerified: new Date(),
-      },
-    }),
-    prisma.user.upsert({
-      where: { email: "maintenance@example.com" },
-      update: {},
-      create: {
-        email: "maintenance@example.com",
-        name: "Emily Maintenance",
-        type: UserType.EMPLOYEE,
-        emailVerified: new Date(),
-      },
-    }),
-  ]);
-
-  console.log({ manager, employee, managers, employees });
 }
 
 main()
@@ -105,4 +35,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-  }); 
+  });
