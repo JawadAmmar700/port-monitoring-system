@@ -9,7 +9,6 @@ This is the frontend application for the Port Monitoring System, providing a mod
 - Interactive dashboard with multiple metrics
 - Time series charts for historical data
 - Interactive map for sensor locations
-- Dark mode support
 - Responsive design
 - Email-based authentication
 - Role-based access control (Manager/Employee)
@@ -41,9 +40,11 @@ This is the frontend application for the Port Monitoring System, providing a mod
 npm install
 ```
 
-2. Create a `.env.local` file with the following variables:
+2. Create a `.env.local` and a `.env` files with the following variables:
 
-```env
+```.env
+## In the .env file
+
 # Database
 DATABASE_URL="mongodb://localhost:27017/port-monitoring" # Add your own MongoDB connection string
 
@@ -51,24 +52,36 @@ DATABASE_URL="mongodb://localhost:27017/port-monitoring" # Add your own MongoDB 
 AUTH_SECRET="your-auth-secret"  # Generate using: openssl rand -base64 32
 BACKEND_URL=http://localhost:3001
 AUTH_TRUST_HOST=http://localhost:3000
-NEXTAUTH_URL=http://localhost:3000
-NEXT_PUBLIC_API_URL="http://localhost:3001"
 
 # Email Configuration (Choose either Mailtrap or Brevo)
 # Option 1: Mailtrap (for development)
-MAILTRAP_HOST="smtp.mailtrap.io"
-MAILTRAP_USERNAME="your-mailtrap-username"
-MAILTRAP_PASSWORD="your-mailtrap-password"
-MAILTRAP_PORT=587
+SMTP_HOST="smtp.mailtrap.io"
+SMTP_USERNAME="your-username"
+SMTP_PASSWORD="your-password"
+SMTP_PORT=587
 EMAIL_FROM="noreply@yourdomain.com"
 
 # Option 2: Brevo (for production)
-# BREVO_HOST="smtp-relay.brevo.com"
-# BREVO_USERNAME="your-brevo-username"
-# BREVO_PASSWORD="your-brevo-api-key"
-# BREVO_PORT=587
-# EMAIL_FROM="your-verified-sender@yourdomain.com"
+SMTP_HOST="smtp-relay.brevo.com"
+SMTP_USERNAME="your-username"
+SMTP_PASSWORD="your-password"
+SMTP_PORT=587
+EMAIL_FROM="your-verified-sender@yourdomain.com"
 ```
+
+```.env.local
+## In the .env.local file
+
+NEXTAUTH_URL=http://localhost:3000
+NEXT_PUBLIC_BACKEND_URL="http://localhost:3001"
+```
+
+⚠️ **Important Note for Brevo Users:**
+
+- No temporary/fake email addresses allowed
+- Account blocking risk with invalid emails
+- Use real email addresses in seed data
+- Verify sender email address
 
 3. Initialize the database:
 
@@ -89,7 +102,7 @@ npm run prisma:seed
 1. Sign up for a Mailtrap account at https://mailtrap.io
 2. Go to your Mailtrap inbox
 3. Click on "Show Credentials"
-4. Copy the SMTP credentials and update your `.env.local` file:
+4. Copy the SMTP credentials and update your `.env` file:
    - MAILTRAP_HOST
    - MAILTRAP_USERNAME
    - MAILTRAP_PASSWORD
@@ -100,10 +113,10 @@ npm run prisma:seed
 1. Sign up for a Brevo account at https://www.brevo.com
 2. Go to SMTP & API settings
 3. Create an SMTP API key
-4. Update your `.env.local` file with Brevo credentials:
+4. Update your `.env` file with Brevo credentials:
    - BREVO_HOST
    - BREVO_USERNAME
-   - BREVO_PASSWORD (API key)
+   - BREVO_PASSWORD
    - BREVO_PORT
    - EMAIL_FROM (must be a verified sender)
 

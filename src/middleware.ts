@@ -4,8 +4,8 @@ import { getToken } from "next-auth/jwt";
 
 // Define routes that are restricted for employees
 const employeeRestrictedRoutes = {
-  "/environmental": ["MANAGER"],
-  "/sensors": ["MANAGER"],
+  "/dashboard/environmental": ["MANAGER"],
+  "/dashboard/sensors": ["MANAGER"],
 };
 
 // Define routes that don't require authentication

@@ -11,11 +11,11 @@ export const authOptions: NextAuthConfig = {
   providers: [
     Nodemailer({
       server: {
-        host: process.env.MAILTRAP_HOST,
-        port: parseInt(process.env.BREVO_PORT || "587"),
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || "587"),
         auth: {
-          user: process.env.MAILTRAP_USERNAME,
-          pass: process.env.MAILTRAP_PASSWORD,
+          user: process.env.SMTP_USERNAME,
+          pass: process.env.SMTP_PASSWORD,
         },
         secure: false,
         tls: {
