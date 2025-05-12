@@ -14,6 +14,10 @@ export default function VesselDetails({
   const [vessel, setVessel] = useState<Vessel>(initialVessel);
 
   useEffect(() => {
+    setVessel(initialVessel);
+  }, [initialVessel]);
+
+  useEffect(() => {
     const handleVesselUpdate = (updatedVessel: Vessel) => {
       if (updatedVessel.id === vessel.id) {
         setVessel((prev) => ({

@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   HomeIcon,
   ChartBarIcon,
@@ -13,10 +14,14 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import UnauthorizedPopup from "./UnauthorizedPopup";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session } = useSession();
   const [isEnvironmentalOpen, setIsEnvironmentalOpen] = useState(true);
+  const [showUnauthorizedPopup, setShowUnauthorizedPopup] = useState(false);
 
   const navigation = [
     { name: "Home", href: "/", icon: HomeIcon },
@@ -36,6 +41,19 @@ const Sidebar = () => {
     { name: "System Overview", href: "/system-overview", icon: CpuChipIcon },
     { name: "Sensors", href: "/dashboard/sensors", icon: BeakerIcon },
   ];
+
+  const handleNavigation = (href: string) => {
+    const isRestrictedRoute =
+      href.startsWith("/dashboard/environmental") ||
+      href.startsWith("/dashboard/sensors");
+
+    if (isRestrictedRoute && session?.user?.type !== "MANAGER") {
+      setShowUnauthorizedPopup(true);
+      return;
+    }
+
+    router.push(href);
+  };
 
   return (
     <div className="flex flex-col h-screen w-64 bg-white border-r border-gray-200">
@@ -82,26 +100,26 @@ const Sidebar = () => {
                       {item.subRoutes.map((subRoute) => {
                         const isSubActive = pathname === subRoute.href;
                         return (
-                          <Link
+                          <button
                             key={subRoute.name}
-                            href={subRoute.href}
-                            className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                            onClick={() => handleNavigation(subRoute.href)}
+                            className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-md ${
                               isSubActive
                                 ? "bg-blue-50 text-blue-600"
                                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                             }`}
                           >
                             {subRoute.name}
-                          </Link>
+                          </button>
                         );
                       })}
                     </div>
                   )}
                 </>
               ) : (
-                <Link
-                  href={item.href}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                <button
+                  onClick={() => handleNavigation(item.href)}
+                  className={`flex items-center w-full px-4 py-2 text-sm font-medium rounded-md ${
                     isActive
                       ? "bg-blue-50 text-blue-600"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -114,7 +132,7 @@ const Sidebar = () => {
                     aria-hidden="true"
                   />
                   {item.name}
-                </Link>
+                </button>
               )}
             </div>
           );
@@ -133,6 +151,11 @@ const Sidebar = () => {
           Logout
         </Link>
       </div>
+
+      <UnauthorizedPopup
+        isOpen={showUnauthorizedPopup}
+        onClose={() => setShowUnauthorizedPopup(false)}
+      />
     </div>
   );
 };

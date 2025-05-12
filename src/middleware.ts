@@ -48,7 +48,7 @@ export async function middleware(request: NextRequest) {
   // If user is authenticated
   if (token) {
     // If user is a MANAGER, allow access to all routes
-    if (token.type === "Manager") {
+    if (token.type === "MANAGER") {
       return NextResponse.next();
     }
 
@@ -59,9 +59,11 @@ export async function middleware(request: NextRequest) {
         (route) => pathname.startsWith(route)
       );
 
-      // If trying to access a restricted route, redirect to unauthorized
+      // If trying to access a restricted route, return unauthorized response
       if (isRestrictedRoute) {
-        return NextResponse.redirect(new URL("/unauthorized", request.url));
+        const response = NextResponse.next();
+        response.headers.set("x-unauthorized", "true");
+        return response;
       }
 
       // Allow access to all other routes

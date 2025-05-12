@@ -252,6 +252,17 @@ export default function VesselTable({ onVesselSelect }: VesselTableProps) {
     return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-800";
   };
 
+  const getStatusBackgroundColor = (status: string) => {
+    const colors = {
+      Docked: "bg-green-100",
+      Anchored: "bg-blue-100",
+      "In Transit": "bg-purple-100",
+      Loading: "bg-yellow-100",
+      Unloading: "bg-orange-100",
+    };
+    return colors[status as keyof typeof colors] || "bg-white";
+  };
+
   const getVesselIcon = (type: string) => {
     const icons = {
       "Container Ship": <Ship className="w-5 h-5" />,
@@ -398,7 +409,11 @@ export default function VesselTable({ onVesselSelect }: VesselTableProps) {
                 onClick={() => handleVesselSelect(vessel)}
                 className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden"
               >
-                <div className="p-4">
+                <div
+                  className={`${getStatusBackgroundColor(
+                    vessel.status
+                  )} p-4 border-b border-gray-100`}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
                       {getVesselIcon(vessel.type)}
@@ -407,7 +422,7 @@ export default function VesselTable({ onVesselSelect }: VesselTableProps) {
                       </h3>
                     </div>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                      className={`px-2 py-1 rounded-full text-xs font-medium shadow-lg ${getStatusColor(
                         vessel.status
                       )}`}
                     >
@@ -445,24 +460,24 @@ export default function VesselTable({ onVesselSelect }: VesselTableProps) {
                       </span>
                     </div>
                   </div>
+                </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Capacity</span>
-                      <span className="font-medium text-gray-900">
-                        {vessel.capacityTons.toLocaleString()} tons
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full"
-                        style={{
-                          width: `${
-                            (vessel.loadTons / vessel.capacityTons) * 100
-                          }%`,
-                        }}
-                      ></div>
-                    </div>
+                <div className="p-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-500">Capacity</span>
+                    <span className="font-medium text-gray-900">
+                      {vessel.capacityTons.toLocaleString()} tons
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{
+                        width: `${
+                          (vessel.loadTons / vessel.capacityTons) * 100
+                        }%`,
+                      }}
+                    ></div>
                   </div>
                 </div>
               </div>
