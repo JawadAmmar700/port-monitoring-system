@@ -130,7 +130,7 @@ export default async function Home() {
           </Link>
 
           {/* Vessel Dashboard Card */}
-          <Link href="/dashboard/sensors" className="group">
+          <Link href="/dashboard/vessels" className="group">
             <div className="bg-white rounded-2xl shadow-sm p-8 hover:shadow-md transition-shadow duration-300">
               <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-blue-100 text-blue-600 mb-4">
                 <svg
